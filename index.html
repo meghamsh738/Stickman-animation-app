@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Stickmotion Studio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="app-header">
+        <div>
+          <p class="eyebrow">Stickmotion Studio</p>
+          <h1>Prebuilt stick characters, cinematic-ready exports.</h1>
+          <p class="lede">
+            Mix character kits, action templates, and expressive faces. Fine-tune size,
+            thickness, and tempo, then export a transparent PNG sequence for any
+            compositing workflow.
+          </p>
+        </div>
+        <div class="header-actions">
+          <button class="ghost" id="resetScene">Reset Scene</button>
+          <button class="primary" id="exportSequence">Export PNG Sequence</button>
+        </div>
+      </header>
+
+      <main class="app-layout">
+        <section class="control-column">
+          <div class="tab-shell">
+            <div class="tab-nav">
+              <button type="button" class="tab-button active" data-tab="character">Character Rig</button>
+              <button type="button" class="tab-button" data-tab="custom">Stick Animator</button>
+              <button type="button" class="tab-button" data-tab="overlay">Overlay Lab</button>
+            </div>
+            <div class="tab-panel active" data-tab="character">
+          <div class="card">
+            <h2>Character Kits</h2>
+            <div class="field">
+              <label for="figureSelect">Preset</label>
+              <select id="figureSelect"></select>
+            </div>
+            <div class="field grid-2">
+              <label>Primary</label>
+              <input type="color" id="primaryColor" />
+              <label>Accent</label>
+              <input type="color" id="accentColor" />
+            </div>
+            <div class="field">
+              <label for="faceSelect">Expression Set</label>
+              <select id="faceSelect"></select>
+            </div>
+          </div>
+
+          <div class="card">
+            <h2>Action Templates</h2>
+            <div class="field">
+              <label for="actionSelect">Motion</label>
+              <select id="actionSelect"></select>
+            </div>
+            <div class="field">
+              <label for="speedRange">Speed</label>
+              <input type="range" id="speedRange" min="0.5" max="2.5" step="0.1" />
+              <span class="range-value" id="speedValue">1.0x</span>
+            </div>
+            <div class="field">
+              <label for="sizeRange">Scale</label>
+              <input type="range" id="sizeRange" min="0.6" max="1.6" step="0.05" />
+              <span class="range-value" id="sizeValue">1.0x</span>
+            </div>
+            <div class="field">
+              <label for="thicknessRange">Stroke</label>
+              <input type="range" id="thicknessRange" min="3" max="12" step="1" />
+              <span class="range-value" id="thicknessValue">6px</span>
+            </div>
+          </div>
+
+        <div class="card">
+          <h2>Character Styling</h2>
+          <div class="toggles">
+            <label class="toggle">
+              <input type="checkbox" id="toggleGlow" />
+                <span>Neon outline</span>
+              </label>
+              <label class="toggle">
+                <input type="checkbox" id="toggleShadow" />
+                <span>Drop shadow</span>
+              </label>
+              <label class="toggle">
+                <input type="checkbox" id="toggleAccessory" />
+                <span>Accessory flair</span>
+              </label>
+            </div>
+            <div class="field">
+              <label for="bgSelect">Backdrop</label>
+              <select id="bgSelect">
+                <option value="grid">Studio Grid</option>
+                <option value="dusk">Dusk Gradient</option>
+                <option value="void">Void Black</option>
+              <option value="paper">Storyboard Paper</option>
+            </select>
+          </div>
+        </div>
+            </div>
+
+            <div class="tab-panel" data-tab="custom">
+              <div class="card custom-card">
+          <h2>Custom Animator</h2>
+          <p class="microcopy">
+            Switch on sculpting to drag joints frame-by-frame. Saved poses mix with the active motion template.
+          </p>
+          <label class="toggle block">
+              <input type="checkbox" id="customModeToggle" />
+              <span>Enable manual framing</span>
+            </label>
+            <div class="field">
+              <label for="frameScrubber">Frame Scrubber</label>
+              <input type="range" id="frameScrubber" min="0" max="47" value="0" />
+              <div class="frame-readout">
+                <span id="frameLabel">Frame 01 / 48</span>
+                <span class="badge" id="keyframeStatus">Empty</span>
+              </div>
+            </div>
+            <div class="micro-controls">
+              <button class="pill" id="captureFrame">Save Pose</button>
+              <button class="pill ghost" id="clearFrame">Clear Pose</button>
+            </div>
+            <div class="micro-controls">
+              <button class="ghost" id="playCustom" disabled>Play Custom</button>
+              <button class="ghost" id="stopCustom" disabled>Stop</button>
+            </div>
+          <p class="microcopy">
+            Tip: drag hips, hands, feet, shoulders, or head pointers on the canvas. Unsaved drags auto-store when you release.
+          </p>
+              </div>
+            </div>
+
+            <div class="tab-panel" data-tab="overlay">
+              <div class="card overlay-card">
+          <h2>Overlay Assets</h2>
+            <p class="microcopy">
+              Layer a transparent PNG prop or logo on top of the stick figure. Controls update live and export with the sequence.
+            </p>
+            <div class="field file-field">
+              <label class="file-label" for="overlayInput">
+                <span>Upload PNG / WEBP</span>
+                <input type="file" id="overlayInput" accept="image/png,image/webp,image/jpeg" />
+              </label>
+              <div class="overlay-meta">
+                <span id="overlayName">No asset loaded</span>
+                <button class="pill ghost" id="clearOverlay" disabled>Remove</button>
+              </div>
+            </div>
+            <div class="field">
+              <div class="label-row">
+                <label for="overlayScale">Scale</label>
+                <button type="button" class="key-btn" data-overlay-key="scale" title="Toggle keyframe" disabled>
+                  ◆
+                </button>
+              </div>
+              <input type="range" id="overlayScale" min="0.3" max="2.5" step="0.1" disabled />
+              <span class="range-value" id="overlayScaleValue">1.0x</span>
+            </div>
+            <div class="field">
+              <div class="label-row">
+                <label for="overlayPosX">Position X</label>
+                <button type="button" class="key-btn" data-overlay-key="posx" title="Toggle keyframe" disabled>
+                  ◆
+                </button>
+              </div>
+              <input type="range" id="overlayPosX" min="0" max="100" step="1" disabled />
+            </div>
+            <div class="field">
+              <div class="label-row">
+                <label for="overlayPosY">Position Y</label>
+                <button type="button" class="key-btn" data-overlay-key="posy" title="Toggle keyframe" disabled>
+                  ◆
+                </button>
+              </div>
+              <input type="range" id="overlayPosY" min="0" max="100" step="1" disabled />
+            </div>
+            <div class="field">
+              <div class="label-row">
+                <label for="overlayRotation">Rotation</label>
+                <button type="button" class="key-btn" data-overlay-key="rotation" title="Toggle keyframe" disabled>
+                  ◆
+                </button>
+              </div>
+              <input type="range" id="overlayRotation" min="-180" max="180" step="1" disabled />
+              <span class="range-value" id="overlayRotationValue">0°</span>
+            </div>
+        <div class="field">
+          <div class="label-row">
+            <label for="overlayOpacity">Opacity</label>
+            <button type="button" class="key-btn" data-overlay-key="opacity" title="Toggle keyframe" disabled>
+              ◆
+            </button>
+          </div>
+          <input type="range" id="overlayOpacity" min="0.1" max="1" step="0.05" disabled />
+          <span class="range-value" id="overlayOpacityValue">100%</span>
+        </div>
+        <p class="microcopy">
+          When overlay animation is enabled, the controls above edit the selected frame; otherwise they apply globally.
+        </p>
+        <div class="divider"></div>
+        <h3>Custom Overlay Animation</h3>
+        <label class="toggle block">
+          <input type="checkbox" id="overlayAnimToggle" />
+          <span>Enable overlay keyframes</span>
+        </label>
+        <div class="field">
+          <label for="overlayFrameScrubber">Overlay Frame</label>
+          <input type="range" id="overlayFrameScrubber" min="0" max="47" value="0" disabled />
+          <div class="frame-readout">
+            <span id="overlayFrameLabel">Frame 01 / 48</span>
+            <span class="badge" id="overlayKeyStatus">Empty</span>
+          </div>
+        </div>
+        <div class="micro-controls">
+          <button class="pill" id="overlayCapture" disabled>Save Frame</button>
+          <button class="pill ghost" id="overlayClearKey" disabled>Clear Frame</button>
+        </div>
+        <div class="micro-controls">
+          <button class="ghost" id="overlayPlay" disabled>Play Overlay</button>
+          <button class="ghost" id="overlayStop" disabled>Stop</button>
+        </div>
+        <div class="field">
+          <label for="overlayEaseSelect">Keyframe Curve</label>
+          <select id="overlayEaseSelect" disabled>
+            <option value="linear">Linear</option>
+            <option value="easeIn">Ease In</option>
+            <option value="easeOut">Ease Out</option>
+            <option value="easeInOut">Ease In-Out</option>
+            <option value="fastSlowFast">Fast-Slow-Fast</option>
+          </select>
+        </div>
+        <p class="microcopy">
+          Use the same 48-frame timeline as the stick figure. Position, scale, and opacity tween between keyed frames automatically.
+        </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="preview-column">
+          <div class="preview-card">
+            <div class="preview-top">
+              <div>
+                <p class="eyebrow">Viewport</p>
+                <h2>Animation Preview</h2>
+              </div>
+              <div class="status-chip" id="statusChip" data-tone="ready">Ready</div>
+            </div>
+            <canvas id="stage" width="640" height="480" aria-label="Stickman preview canvas"></canvas>
+            <div class="timeline">
+              <div class="tick" style="--i: 0"></div>
+              <div class="tick" style="--i: 1"></div>
+              <div class="tick" style="--i: 2"></div>
+              <div class="tick" style="--i: 3"></div>
+              <div class="playhead" id="playhead"></div>
+            </div>
+            <div class="export-note">
+              Exports include 48 PNG frames with transparent backgrounds sized to the current viewport.
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
+    <script src="app.js" type="module"></script>
+  </body>
+</html>
