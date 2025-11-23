@@ -36,6 +36,11 @@ No build step is required; edits to `index.html`, `styles.css`, or `app.js` hot-
 - `app.js` – All application logic: presets, action solvers, custom animator state machine, overlay tooling, drawing + export pipeline.
 - `AGENTS.md` – Repo guidelines and project conventions for future expansion to a larger TS-based stack.
 
+## Screenshot
+| Overview |
+| --- |
+| ![Stickmotion Studio UI](screenshots/overview.png) |
+
 ## Next Steps
 - Port the runtime into a TypeScript/Vite setup that mirrors the structure defined in `AGENTS.md`.
 - Add tests around the motion solvers once the project adopts a bundler/test runner (`npm run test` scaffolding).
