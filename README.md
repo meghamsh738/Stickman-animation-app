@@ -22,6 +22,16 @@ Stickmotion Studio is a single-page stick figure animation lab built with vanill
    ```
 3. Open the served URL (default `http://localhost:3000` or `http://localhost:4173`) in a modern browser.
 
+### Quick script
+
+From the repo root run:
+
+```bash
+./run stickman --open
+```
+
+This starts a local Python static server (default `http://localhost:8006/`) and opens your browser. Use `--port` / `--bind` to change the address, or `--path` to point at another folder of static files.
+
 No build step is required; edits to `index.html`, `styles.css`, or `app.js` hot-reload as soon as you refresh the page.
 
 ## Using the App
@@ -37,6 +47,7 @@ No build step is required; edits to `index.html`, `styles.css`, or `app.js` hot-
 - `AGENTS.md` – Repo guidelines and project conventions for future expansion to a larger TS-based stack.
 
 ## Screenshot
+Latest capture (Dec 1, 2025 after `npm run test:e2e` + headless Chromium):
 | Overview |
 | --- |
 | ![Stickmotion Studio UI](screenshots/overview.png) |
