@@ -52,6 +52,8 @@ Latest capture (Dec 1, 2025 after `npm run test:e2e` + headless Chromium):
 | --- |
 | ![Stickmotion Studio UI](screenshots/overview.png) |
 
+To regenerate the screenshot: `npm run test:e2e` (Playwright).
+
 ## Next Steps
 - Port the runtime into a TypeScript/Vite setup that mirrors the structure defined in `AGENTS.md`.
 - Add tests around the motion solvers once the project adopts a bundler/test runner (`npm run test` scaffolding).
