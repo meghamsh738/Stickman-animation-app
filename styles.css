@@ -26,6 +26,20 @@ body {
   color: var(--text);
 }
 
+a {
+  color: inherit;
+}
+
+::selection {
+  background: rgba(97, 233, 255, 0.25);
+  color: var(--text);
+}
+
+:focus-visible {
+  outline: 2px solid rgba(97, 233, 255, 0.85);
+  outline-offset: 2px;
+}
+
 .app-shell {
   max-width: 1200px;
   margin: 0 auto;
@@ -93,6 +107,17 @@ button.ghost {
 
 button:hover {
   transform: translateY(-2px);
+}
+
+button:active {
+  transform: translateY(-1px);
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
 }
 
 .app-layout {
@@ -179,6 +204,12 @@ input[type='range'] {
   border-radius: 0.65rem;
   padding: 0.45rem 0.8rem;
   font-size: 0.95rem;
+}
+
+input[type='color']:focus-visible,
+select:focus-visible {
+  border-color: rgba(97, 233, 255, 0.55);
+  box-shadow: 0 0 0 3px rgba(97, 233, 255, 0.14);
 }
 
 input[type='range'] {
@@ -451,5 +482,13 @@ canvas.edit-mode {
 
   .app-layout {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    scroll-behavior: auto !important;
+    transition: none !important;
+    animation: none !important;
   }
 }

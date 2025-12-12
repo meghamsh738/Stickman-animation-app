@@ -1,0 +1,135 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+usage() {
+  cat <<'HELP'
+Usage: run stickman [options]
+
+Serve Stickmotion Studio from this repo.
+
+Options:
+  stickman | -stickman | --stickman  Start the Stickmotion Studio static server.
+  -p, --port PORT                    Port to bind (default: 8006).
+  -b, --bind HOST                    Bind address (default: 0.0.0.0 for LAN access).
+      --host HOST                    Alias for --bind.
+  --path DIR                         Override project path (defaults to script directory).
+  -o, --open                         Open the app in your default browser.
+  -h, --help                         Show this help text.
+HELP
+  exit 1
+}
+
+if [[ $# -eq 0 ]]; then
+  usage
+fi
+
+# Defaults
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_PATH="$SCRIPT_DIR"
+PORT=8006
+BIND_ADDR="0.0.0.0"
+TARGET=""
+OPEN_BROWSER=false
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    -stickman|--stickman)
+      TARGET="stickman"
+      shift
+      ;;
+    stickman)
+      TARGET="stickman"
+      shift
+      ;;
+    -p|--port)
+      PORT="${2:-}"
+      [[ -n "$PORT" ]] || usage
+      shift 2
+      ;;
+    -b|--bind)
+      BIND_ADDR="${2:-}"
+      [[ -n "$BIND_ADDR" ]] || usage
+      shift 2
+      ;;
+    --host)
+      BIND_ADDR="${2:-}"
+      [[ -n "$BIND_ADDR" ]] || usage
+      shift 2
+      ;;
+    --path)
+      PROJECT_PATH="${2:-}"
+      [[ -n "$PROJECT_PATH" ]] || usage
+      shift 2
+      ;;
+    -o|--open)
+      OPEN_BROWSER=true
+      shift
+      ;;
+    -h|--help)
+      usage
+      ;;
+    *)
+      echo "Unknown option: $1" >&2
+      usage
+      ;;
+  esac
+done
+
+if [[ "$TARGET" != "stickman" ]]; then
+  usage
+fi
+
+# In WSL, ensure the Windows D: drive is mounted before continuing.
+if [[ "$(uname -r)" == *Microsoft* || "$(uname -r)" == *microsoft* ]]; then
+  if ! mountpoint -q /mnt/d 2>/dev/null; then
+    if command -v sudo >/dev/null 2>&1; then
+      echo "Mounting D: to /mnt/d (may prompt for sudo)..."
+      sudo mkdir -p /mnt/d
+      sudo mount -t drvfs D: /mnt/d || true
+    fi
+  fi
+fi
+
+if [[ ! -d "$PROJECT_PATH" ]]; then
+  echo "Project path not found: $PROJECT_PATH" >&2
+  exit 1
+fi
+
+if [[ ! -f "$PROJECT_PATH/index.html" ]]; then
+  echo "index.html not found in $PROJECT_PATH (is this the repo root?)" >&2
+  exit 1
+fi
+
+cd "$PROJECT_PATH"
+
+if command -v python3 >/dev/null 2>&1; then
+  CMD=(python3 -m http.server "$PORT" --bind "$BIND_ADDR")
+elif command -v python >/dev/null 2>&1; then
+  CMD=(python -m http.server "$PORT" --bind "$BIND_ADDR")
+else
+  echo "Python is required to serve the static files." >&2
+  exit 1
+fi
+
+display_host="$BIND_ADDR"
+[[ "$display_host" == "0.0.0.0" ]] && display_host="localhost"
+url="http://$display_host:$PORT/"
+
+echo "Serving Stickmotion Studio from $PROJECT_PATH"
+echo "URL: $url"
+
+if [[ "$OPEN_BROWSER" == true ]]; then
+  if [[ -n "${WSL_DISTRO_NAME:-}" ]] && command -v wslview >/dev/null 2>&1; then
+    wslview "$url" >/dev/null 2>&1 || true
+  elif command -v xdg-open >/dev/null 2>&1; then
+    xdg-open "$url" >/dev/null 2>&1 || true
+  elif command -v open >/dev/null 2>&1; then
+    open "$url" >/dev/null 2>&1 || true
+  elif command -v powershell.exe >/dev/null 2>&1; then
+    powershell.exe start "$url" >/dev/null 2>&1 || true
+  else
+    echo "(Couldn't auto-open; please open the URL above manually.)"
+  fi
+fi
+
+exec "${CMD[@]}"
