@@ -47,7 +47,7 @@ No build step is required; edits to `index.html`, `styles.css`, or `app.js` hot-
 - `AGENTS.md` – Repo guidelines and project conventions for future expansion to a larger TS-based stack.
 
 ## Screenshot
-Latest capture (Dec 1, 2025 after `npm run test:e2e` + headless Chromium):
+Latest capture (Dec 25, 2025 after `npm run test:e2e` + headless Chromium):
 | Overview |
 | --- |
 | ![Stickmotion Studio UI](screenshots/overview.png) |
