@@ -3,7 +3,7 @@
 #   ./run -stickman --port 8006
 
 # Manual steps (equivalent to the script) if you want to copy/paste:
-sudo mkdir -p /mnt/d
-sudo mount -t drvfs D: /mnt/d || true
+sudo mkdir -p <DRIVE_MOUNT>
+sudo mount -t drvfs <DRIVE_LETTER>: <DRIVE_MOUNT> || true
 cd "<PROJECTS_DIR>/Stickman-animation-app"
 python3 -m http.server 8006 --bind 0.0.0.0

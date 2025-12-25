@@ -79,14 +79,21 @@ if [[ "$TARGET" != "stickman" ]]; then
   usage
 fi
 
-# In WSL, ensure the Windows D: drive is mounted before continuing.
+# In WSL, ensure the Windows drive is mounted before continuing.
+# Set DRIVE_LETTER and DRIVE_MOUNT to enable auto-mounting.
+DRIVE_LETTER="${DRIVE_LETTER:-<DRIVE_LETTER>}"
+DRIVE_MOUNT="${DRIVE_MOUNT:-<DRIVE_MOUNT>}"
 if [[ "$(uname -r)" == *Microsoft* || "$(uname -r)" == *microsoft* ]]; then
-  if ! mountpoint -q /mnt/d 2>/dev/null; then
-    if command -v sudo >/dev/null 2>&1; then
-      echo "Mounting D: to /mnt/d (may prompt for sudo)..."
-      sudo mkdir -p /mnt/d
-      sudo mount -t drvfs D: /mnt/d || true
+  if [[ "$DRIVE_LETTER" != "<DRIVE_LETTER>" && "$DRIVE_MOUNT" != "<DRIVE_MOUNT>" ]]; then
+    if ! mountpoint -q "$DRIVE_MOUNT" 2>/dev/null; then
+      if command -v sudo >/dev/null 2>&1; then
+        echo "Mounting ${DRIVE_LETTER}: to ${DRIVE_MOUNT} (may prompt for sudo)..."
+        sudo mkdir -p "$DRIVE_MOUNT"
+        sudo mount -t drvfs "${DRIVE_LETTER}:" "$DRIVE_MOUNT" || true
+      fi
     fi
+  else
+    echo "WSL drive mount skipped; set DRIVE_LETTER and DRIVE_MOUNT to enable auto-mount." >&2
   fi
 fi
 
