@@ -42,12 +42,12 @@ No build step is required; edits to `index.html`, `styles.css`, or `app.js` hot-
 
 ## Project Layout
 - `index.html` – Document skeleton, layout for the three control tabs, and export/reset buttons.
-- `styles.css` – Visual system (Inter font, panel layout, tabs, badges, canvas stage styling).
+- `styles.css` – Visual system (lab notebook tokens, panel layout, tabs, badges, canvas stage styling).
 - `app.js` – All application logic: presets, action solvers, custom animator state machine, overlay tooling, drawing + export pipeline.
 - `AGENTS.md` – Repo guidelines and project conventions for future expansion to a larger TS-based stack.
 
 ## Screenshot
-Latest capture (Dec 25, 2025 after `npm run test:e2e` + headless Chromium):
+Latest capture (Dec 28, 2025 after `npm run test:e2e` + headless Chromium):
 | Overview |
 | --- |
 | ![Stickmotion Studio UI](screenshots/overview.png) |
